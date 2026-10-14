@@ -1,0 +1,87 @@
+:root {
+  --clay-50: #F3F2F2;
+  --clay-100: #E6E5E5;
+  --clay-200: #D3D2D2;
+  --clay-300: #BDBCBC;
+  --clay-400: #A3A2A2;
+  --clay-500: #878686;
+  --clay-600: #6B6A6A;
+  --clay-700: #4F4E4E;
+  --clay-800: #353434;
+  --clay-900: #1E1D1D;
+  --clay-950: #0D0C0C;
+
+  /* Light Theme */
+  --clay-surface: var(--clay-50);
+  --clay-raised-bg: var(--clay-100);
+  --clay-text: var(--clay-950);
+  --clay-muted: var(--clay-600);
+  --clay-inverse-bg: var(--clay-950);
+  --clay-inverse-text: var(--clay-50);
+
+  --clay-raised:
+    8px 8px 20px rgba(13,12,12,0.16),
+    -6px -6px 16px rgba(255,255,255,0.85),
+    inset 2px 2px 4px rgba(255,255,255,0.8),
+    inset -3px -3px 6px rgba(13,12,12,0.10);
+
+  --clay-raised-hover:
+    10px 10px 24px rgba(13,12,12,0.2),
+    -8px -8px 20px rgba(255,255,255,0.9),
+    inset 2px 2px 4px rgba(255,255,255,0.9),
+    inset -3px -3px 6px rgba(13,12,12,0.12);
+
+  --clay-pressed:
+    inset 6px 6px 12px rgba(13,12,12,0.18),
+    inset -5px -5px 10px rgba(255,255,255,0.8);
+
+  --clay-flat:
+    3px 3px 8px rgba(13,12,12,0.12),
+    -3px -3px 8px rgba(255,255,255,0.8);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --clay-surface: var(--clay-950);
+  --clay-raised-bg: var(--clay-900);
+  --clay-text: var(--clay-50);
+  --clay-muted: var(--clay-400);
+  --clay-inverse-bg: var(--clay-50);
+  --clay-inverse-text: var(--clay-950);
+
+  --clay-raised:
+    8px 8px 20px rgba(0,0,0,0.65),
+    -6px -6px 16px rgba(243,242,242,0.05),
+    inset 2px 2px 4px rgba(243,242,242,0.07),
+    inset -3px -3px 6px rgba(0,0,0,0.5);
+
+  --clay-raised-hover:
+    10px 10px 24px rgba(0,0,0,0.75),
+    -8px -8px 20px rgba(243,242,242,0.07),
+    inset 2px 2px 4px rgba(243,242,242,0.09),
+    inset -3px -3px 6px rgba(0,0,0,0.6);
+
+  --clay-pressed:
+    inset 6px 6px 12px rgba(0,0,0,0.7),
+    inset -5px -5px 10px rgba(243,242,242,0.05);
+
+  --clay-flat:
+    3px 3px 8px rgba(0,0,0,0.55),
+    -3px -3px 8px rgba(243,242,242,0.04);
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--clay-surface);
+  color: var(--clay-text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

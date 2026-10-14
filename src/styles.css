@@ -1,15 +1,52 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+@import "./ui/tokens.css";
 
-:root {
-  font-family: Arial, sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+  --font-sans: 'Nunito Variable', 'Nunito', sans-serif;
+  --color-clay-50: #F3F2F2;
+  --color-clay-100: #E6E5E5;
+  --color-clay-200: #D3D2D2;
+  --color-clay-300: #BDBCBC;
+  --color-clay-400: #A3A2A2;
+  --color-clay-500: #878686;
+  --color-clay-600: #6B6A6A;
+  --color-clay-700: #4F4E4E;
+  --color-clay-800: #353434;
+  --color-clay-900: #1E1D1D;
+  --color-clay-950: #0D0C0C;
 }
 
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
+/* Claymorphism Utility Classes */
+.clay-raised {
+  background-color: var(--clay-raised-bg);
+  box-shadow: var(--clay-raised);
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.clay-raised:hover {
+  box-shadow: var(--clay-raised-hover);
+  transform: translateY(-1px);
+}
+.clay-raised:active {
+  box-shadow: var(--clay-pressed);
+  transform: scale(0.97);
+}
+
+.clay-pressed {
+  background-color: var(--clay-surface);
+  box-shadow: var(--clay-pressed);
+}
+
+.clay-flat {
+  background-color: var(--clay-raised-bg);
+  box-shadow: var(--clay-flat);
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.clay-flat:hover {
+  box-shadow: var(--clay-raised);
+  transform: translateY(-1px);
+}
+
+.clay-focus:focus-visible {
+  outline: 2px solid var(--clay-text);
+  outline-offset: 3px;
 }

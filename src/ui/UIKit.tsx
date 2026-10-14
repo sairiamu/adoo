@@ -10,6 +10,7 @@ import { Panel } from "./Panel";
 import { Card } from "./Card";
 import { Tooltip } from "./Tooltip";
 import { Tabs } from "./Tabs";
+import { Play, Settings } from "./icons";
 
 export const UIKit: React.FC<{ onBackToEditor?: () => void }> = ({ onBackToEditor }) => {
   const { theme, toggleTheme } = useTheme();
@@ -58,8 +59,12 @@ export const UIKit: React.FC<{ onBackToEditor?: () => void }> = ({ onBackToEdito
             <Button variant="pressed">Pressed State</Button>
           </div>
           <div className="flex items-center gap-4 mt-4">
-            <IconButton aria-label="Play">▶</IconButton>
-            <IconButton aria-label="Settings" active>⚙</IconButton>
+            <IconButton aria-label="Play">
+              <Play size={18} />
+            </IconButton>
+            <IconButton aria-label="Settings" active>
+              <Settings size={18} />
+            </IconButton>
             <Tooltip content="Tooltip helper text">
               <Button>Hover for Tooltip</Button>
             </Tooltip>

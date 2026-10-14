@@ -6,6 +6,7 @@ import { TextElement } from "./elements/TextElement";
 import { ShapeElement } from "./elements/ShapeElement";
 import { ImageElement } from "./elements/ImageElement";
 import { VideoElement } from "./elements/VideoElement";
+import { Star } from "../ui/icons";
 
 interface SceneRendererProps {
   scene: Scene;
@@ -52,13 +53,12 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({ scene, brand }) =>
               transform: `rotate(${element.rotation}deg)`,
               opacity: element.opacity,
               color: resolveBrandTokens(element.color, brand),
-              fontSize: `${element.size}px`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            ★
+            <Star size={element.size} />
           </div>
         );
       case "group":

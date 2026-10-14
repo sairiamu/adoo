@@ -10,3 +10,6 @@ export * from "./Card";
 export * from "./Tooltip";
 export * from "./Tabs";
 export * from "./UIKit";
+export * from "./JsonEditor";
+export * from "./icons";
+export * from "./router";

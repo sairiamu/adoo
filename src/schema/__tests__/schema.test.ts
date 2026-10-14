@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { describe, it, expect } from "vitest";
 import {
   ProjectSchema,
@@ -98,37 +99,41 @@ describe("Schema & Project Validation", () => {
     const result = ProjectSchema.safeParse(projectData);
     expect(result.success).toBe(true);
     if (result.success) {
-      const elements = result.data.scenes[0].elements;
-      expect(elements.length).toBe(6);
-      expect(elements[0].type).toBe("text");
-      if (elements[0].type === "text") {
-        expect(elements[0].content).toBe("Hello World");
-        expect(elements[0].size).toBe(64);
-        expect(elements[0].color).toBe("{brand.colors.text}"); // default applied
-      }
-      expect(elements[3].type).toBe("shape");
-      if (elements[3].type === "shape") {
-        expect(elements[3].shapeType).toBe("ellipse");
-      }
-      expect(elements[5].type).toBe("group");
-      if (elements[5].type === "group") {
-        expect(elements[5].children.length).toBe(1);
-        expect(elements[5].children[0].type).toBe("text");
+      const firstScene = result.data.scenes[0];
+      expect(firstScene).toBeDefined();
+      if (firstScene) {
+        const elements = firstScene.elements;
+        expect(elements.length).toBe(6);
+        expect(elements[0].type).toBe("text");
+        if (elements[0].type === "text") {
+          expect(elements[0].content).toBe("Hello World");
+          expect(elements[0].size).toBe(64);
+          expect(elements[0].color).toBe("{brand.colors.text}");
+        }
+        expect(elements[3].type).toBe("shape");
+        if (elements[3].type === "shape") {
+          expect(elements[3].shapeType).toBe("ellipse");
+        }
+        expect(elements[5].type).toBe("group");
+        if (elements[5].type === "group") {
+          expect(elements[5].children.length).toBe(1);
+          expect(elements[5].children[0].type).toBe("text");
+        }
       }
     }
   });
 
   it("should reject a bad project with invalid types or invalid element discriminator", () => {
     const badProject = {
-      version: "not-a-number", // should be number
+      version: "not-a-number",
       meta: {
-        kind: "invalid-kind", // invalid enum
+        kind: "invalid-kind",
       },
       scenes: [
         {
           elements: [
             {
-              type: "unknown-element-type", // invalid discriminated union type
+              type: "unknown-element-type",
             },
           ],
         },

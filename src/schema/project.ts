@@ -45,13 +45,15 @@ export const ProjectMetaSchema = z.object({
   fps: z.number().default(30),
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
-}).default({
+}).default(() => ({
   name: "Untitled Project",
-  kind: "reel",
+  kind: "reel" as ProjectKind,
   width: 1080,
   height: 1920,
   fps: 30,
-});
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+}));
 
 export const ProjectSchema = z.object({
   version: z.number().default(1),

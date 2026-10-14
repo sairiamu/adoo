@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "concurrently --kill-others-on-fail -n editor,server -c cyan,magenta \"vite\" \"tsx watch server/index.ts\"",
     "build": "npm run typecheck && vite build",
+    "studio": "remotion studio",
+    "render:still": "remotion still",
     "lint": "eslint . && prettier --check \"src/**/*.{ts,tsx,css}\" \"server/**/*.ts\" \"vite.config.ts\" \"eslint.config.js\" \"package.json\" \"tsconfig*.json\" \"index.html\" \".prettierrc.json\"",
     "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.server.json",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"server/**/*.ts\" \"vite.config.ts\" \"eslint.config.js\" \"package.json\" \"tsconfig*.json\" \"index.html\" \".prettierrc.json\""
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@remotion/cli": "^4.0.535",
     "@tailwindcss/vite": "^4.3.3",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",

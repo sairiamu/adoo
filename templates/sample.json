@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "meta": {
+    "name": "Sample Video Project",
+    "kind": "reel",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "brand": {
+    "colors": {
+      "primary": "#3b82f6",
+      "accent": "#f59e0b",
+      "bg": "#0f172a",
+      "text": "#f8fafc"
+    },
+    "fonts": {
+      "heading": "Inter",
+      "body": "Inter"
+    }
+  },
+  "audio": [],
+  "scenes": [
+    {
+      "id": "scene-1",
+      "name": "Intro Scene",
+      "durationInFrames": 90,
+      "background": {
+        "type": "solid",
+        "color": "{brand.colors.bg}"
+      },
+      "elements": [
+        {
+          "id": "el-shape-1",
+          "name": "Header Background",
+          "type": "shape",
+          "shapeType": "rect",
+          "x": 90,
+          "y": 200,
+          "width": 900,
+          "height": 300,
+          "rotation": 0,
+          "opacity": 0.9,
+          "locked": false,
+          "hidden": false,
+          "startFrame": 0,
+          "durationInFrames": 90,
+          "fill": "{brand.colors.primary}",
+          "radius": 24
+        },
+        {
+          "id": "el-text-1",
+          "name": "Main Title",
+          "type": "text",
+          "x": 120,
+          "y": 250,
+          "width": 840,
+          "height": 200,
+          "rotation": 0,
+          "opacity": 1,
+          "locked": false,
+          "hidden": false,
+          "startFrame": 0,
+          "durationInFrames": 90,
+          "content": "Welcome to Adoo",
+          "font": "{brand.fonts.heading}",
+          "size": 64,
+          "weight": "bold",
+          "color": "{brand.colors.text}",
+          "align": "center"
+        }
+      ],
+      "transitionOut": {
+        "type": "fade",
+        "duration": 15
+      }
+    },
+    {
+      "id": "scene-2",
+      "name": "Content Scene",
+      "durationInFrames": 90,
+      "background": {
+        "type": "solid",
+        "color": "#1e293b"
+      },
+      "elements": [
+        {
+          "id": "el-text-2",
+          "name": "Subtitle",
+          "type": "text",
+          "x": 100,
+          "y": 400,
+          "width": 880,
+          "height": 150,
+          "rotation": 0,
+          "opacity": 1,
+          "locked": false,
+          "hidden": false,
+          "startFrame": 0,
+          "durationInFrames": 90,
+          "content": "Create videos programmatically with Remotion & Zod",
+          "font": "{brand.fonts.body}",
+          "size": 42,
+          "weight": "normal",
+          "color": "{brand.colors.accent}",
+          "align": "center"
+        },
+        {
+          "id": "el-shape-2",
+          "name": "Accent Badge",
+          "type": "shape",
+          "shapeType": "ellipse",
+          "x": 440,
+          "y": 800,
+          "width": 200,
+          "height": 200,
+          "rotation": 0,
+          "opacity": 1,
+          "locked": false,
+          "hidden": false,
+          "startFrame": 15,
+          "durationInFrames": 75,
+          "fill": "{brand.colors.accent}",
+          "radius": 0
+        }
+      ],
+      "transitionOut": {
+        "type": "none",
+        "duration": 0
+      }
+    }
+  ]
+}

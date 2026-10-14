@@ -10,6 +10,31 @@ export const Play: React.FC<IconProps> = ({ size = 24, ...props }) => (
   </svg>
 );
 
+export const Pause: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" />
+  </svg>
+);
+
+export const SkipBack: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polygon points="19 20 9 12 19 4 19 20" /><line x1="5" x2="5" y1="4" y2="20" />
+  </svg>
+);
+
+export const SkipForward: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polygon points="5 4 15 12 5 20 5 4" /><line x1="19" x2="19" y1="4" y2="20" />
+  </svg>
+);
+
+export const Sparkles: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+    <path d="M5 3v4" /><path d="M19 17v4" /><path d="M3 5h4" /><path d="M17 19h4" />
+  </svg>
+);
+
 export const Settings: React.FC<IconProps> = ({ size = 24, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
@@ -160,5 +185,35 @@ export const Music: React.FC<IconProps> = ({ size = 24, ...props }) => (
 export const Trash2: React.FC<IconProps> = ({ size = 24, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" />
+  </svg>
+);
+
+export const Grid: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect width="18" height="18" x="3" y="3" rx="2" /><path d="M3 9h18" /><path d="M3 15h18" /><path d="M9 3v18" /><path d="M15 3v18" />
+  </svg>
+);
+
+export const Shield: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  </svg>
+);
+
+export const ZoomIn: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /><line x1="11" x2="11" y1="8" y2="14" /><line x1="8" x2="14" y1="11" y2="11" />
+  </svg>
+);
+
+export const ZoomOut: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /><line x1="8" x2="14" y1="11" y2="11" />
+  </svg>
+);
+
+export const Maximize2: React.FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" /><line x1="21" x2="14" y1="3" y2="10" /><line x1="3" x2="10" y1="21" y2="14" />
   </svg>
 );

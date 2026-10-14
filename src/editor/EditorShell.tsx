@@ -1,40 +1,73 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useTheme, Button, IconButton, Panel, Tabs, Input, Slider, Select, useParams, useNavigate } from "../ui";
-import { Undo2, Redo2, Download, Sun, Moon, ArrowLeft, Image as ImageIcon, Video, Type, Square, Sliders, Search, Plus, Play } from "../ui/icons";
-import { Player } from "@remotion/player";
+import { Undo2, Redo2, Download, Sun, Moon, ArrowLeft, Image as ImageIcon, Video, Type, Square, Sliders, Search, Plus, Play, Pause, SkipBack, SkipForward, Sparkles } from "../ui/icons";
+import { Player, PlayerRef } from "@remotion/player";
 import { ProjectComp } from "../remotion/ProjectComp";
-import { ProjectSchema, Project } from "../schema";
-import sampleJson from "../../templates/sample.json";
+import { useEditorStore } from "./store/useEditorStore";
+import { CanvasOverlay } from "./canvas/CanvasOverlay";
 
 export const EditorShell: React.FC = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  const [project] = useState<Project>(() => {
-    if (projectId && projectId !== "sample-project") {
-      const saved = localStorage.getItem(`adoo-project-${projectId}`);
-      if (saved) {
-        try {
-          return ProjectSchema.parse(JSON.parse(saved));
-        } catch { /* fallback */ }
-      }
-    }
-    return ProjectSchema.parse(sampleJson);
-  });
+  const playerRef = useRef<PlayerRef>(null);
+
+  const {
+    project,
+    activeSceneId,
+    playheadFrame,
+    isPlaying,
+    setPlayhead,
+    setIsPlaying,
+    updateElement,
+    updateBrand,
+    updateMeta,
+  } = useEditorStore();
 
   const [leftTab, setLeftTab] = useState<"Library" | "Layers">("Library");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const leftWidth = 280;
-  const rightWidth = 300;
-  const bottomHeight = 200;
+  const rightWidth = 320;
+  const bottomHeight = 220;
 
   const totalFrames = project.scenes.reduce(
     (acc, scene) => acc + scene.durationInFrames,
     0
   );
+
+  const activeScene = project.scenes.find((s) => s.id === activeSceneId) || project.scenes[0];
+  const firstTextElement = activeScene?.elements.find((e) => e.type === "text");
+
+  // Sync playhead frame while playing
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      if (playerRef.current) {
+        const current = playerRef.current.getCurrentFrame();
+        setPlayhead(current);
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isPlaying, setPlayhead]);
+
+  const togglePlay = () => {
+    if (!playerRef.current) return;
+    if (isPlaying) {
+      playerRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      playerRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const stepFrame = (delta: number) => {
+    const nextFrame = Math.max(0, Math.min(totalFrames - 1, playheadFrame + delta));
+    setPlayhead(nextFrame);
+    playerRef.current?.seekTo(nextFrame);
+  };
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col" style={{ backgroundColor: "var(--clay-surface)", color: "var(--clay-text)" }}>
@@ -46,7 +79,8 @@ export const EditorShell: React.FC = () => {
           </IconButton>
           <input
             type="text"
-            defaultValue={project.meta.name}
+            value={project.meta.name}
+            onChange={(e) => updateMeta({ name: e.target.value })}
             className="font-extrabold text-lg bg-transparent border-none outline-none px-2 py-1 rounded hover:bg-[var(--clay-surface)] focus:bg-[var(--clay-surface)] focus:shadow-[var(--clay-pressed)] transition-all"
           />
         </div>
@@ -97,7 +131,7 @@ export const EditorShell: React.FC = () => {
             ) : (
               <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
                 <div className="text-xs font-bold text-[var(--clay-muted)] uppercase tracking-wider mb-1">Scene Elements</div>
-                {project.scenes[0]?.elements.map((el, idx) => (
+                {activeScene?.elements.map((el, idx) => (
                   <div
                     key={el.id}
                     className="p-3 rounded-xl bg-[var(--clay-surface)] shadow-[var(--clay-flat)] flex items-center justify-between text-sm font-bold cursor-pointer hover:shadow-[var(--clay-raised)] transition-all"
@@ -118,16 +152,11 @@ export const EditorShell: React.FC = () => {
 
         {/* Center Canvas Area + Bottom Timeline */}
         <div className="flex-1 flex flex-col gap-4 overflow-hidden">
-          {/* Canvas / Preview Slab */}
-          <Panel className="flex-1 flex items-center justify-center relative overflow-hidden bg-[var(--clay-raised-bg)]">
-            <div className="absolute top-4 left-4 flex gap-2">
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[var(--clay-surface)] shadow-[var(--clay-pressed)] text-[var(--clay-muted)]">
-                {project.meta.width} x {project.meta.height} px
-              </span>
-            </div>
-
-            <div className="shadow-2xl rounded-2xl overflow-hidden border border-[var(--clay-300)] bg-black">
+          {/* Canvas / Preview Slab with CanvasOverlay */}
+          <Panel className="flex-1 flex items-center justify-center relative overflow-hidden bg-[var(--clay-raised-bg)] p-0">
+            <CanvasOverlay>
               <Player
+                ref={playerRef}
                 component={ProjectComp}
                 inputProps={{ project }}
                 durationInFrames={Math.max(totalFrames, 1)}
@@ -135,24 +164,32 @@ export const EditorShell: React.FC = () => {
                 compositionWidth={project.meta.width}
                 compositionHeight={project.meta.height}
                 style={{
-                  width: "320px",
-                  height: "568px",
+                  width: `${project.meta.width}px`,
+                  height: `${project.meta.height}px`,
                 }}
-                controls
-                autoPlay
-                loop
+                controls={false}
+                spaceKeyToPlayOrPause={false}
               />
-            </div>
+            </CanvasOverlay>
           </Panel>
 
           {/* Bottom Timeline Slab */}
           <Panel style={{ height: `${bottomHeight}px` }} className="p-4 flex flex-col gap-3">
             <div className="flex justify-between items-center">
+              {/* Transport Controls */}
               <div className="flex items-center gap-3">
-                <IconButton onClick={() => setIsPlaying(!isPlaying)}>
-                  <Play size={16} />
+                <IconButton onClick={() => stepFrame(-1)} title="Previous Frame">
+                  <SkipBack size={16} />
                 </IconButton>
-                <span className="text-sm font-bold">Timeline (30 fps)</span>
+                <IconButton onClick={togglePlay} title={isPlaying ? "Pause" : "Play"} active={isPlaying}>
+                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                </IconButton>
+                <IconButton onClick={() => stepFrame(1)} title="Next Frame">
+                  <SkipForward size={16} />
+                </IconButton>
+                <span className="text-sm font-bold ml-2">
+                  Frame {playheadFrame} / {totalFrames}
+                </span>
               </div>
               <div className="flex gap-2">
                 <Button variant="flat" style={{ padding: "4px 10px", fontSize: "12px" }}>
@@ -161,10 +198,17 @@ export const EditorShell: React.FC = () => {
               </div>
             </div>
 
-            {/* Timeline Tracks Header / Ruler */}
-            <div className="h-8 rounded-lg bg-[var(--clay-surface)] shadow-[var(--clay-pressed)] px-4 flex items-center text-xs text-[var(--clay-muted)]">
-              <span>00:00</span>
-              <span className="ml-auto">00:05</span>
+            {/* Scrubber Slider */}
+            <div className="w-full">
+              <Slider
+                min={0}
+                max={Math.max(totalFrames - 1, 1)}
+                value={playheadFrame}
+                onChange={(val) => {
+                  setPlayhead(val);
+                  playerRef.current?.seekTo(val);
+                }}
+              />
             </div>
 
             {/* Scene Blocks & Elements */}
@@ -195,12 +239,45 @@ export const EditorShell: React.FC = () => {
           </Panel>
         </div>
 
-        {/* Right Properties Panel */}
+        {/* Right Properties Panel + Temporary Debug Panel for Instant Preview Proof */}
         <div style={{ width: `${rightWidth}px` }} className="flex flex-col gap-4">
           <Panel className="flex-1 p-5 overflow-y-auto flex flex-col gap-5">
             <h3 className="text-lg font-extrabold flex items-center gap-2">
               <Sliders size={18} /> Properties
             </h3>
+
+            {/* Temporary Debug Panel proving instant store-to-preview updates */}
+            <div className="p-4 rounded-xl bg-[var(--clay-surface)] shadow-[var(--clay-pressed)] flex flex-col gap-3 border border-blue-500/40">
+              <span className="text-xs font-extrabold text-blue-400 flex items-center gap-1.5">
+                <Sparkles size={14} /> Live Store Debug Proof
+              </span>
+              <p className="text-xs text-[var(--clay-muted)]">
+                Edit below to instantly update the Remotion preview:
+              </p>
+
+              {firstTextElement && (
+                <Input
+                  label="Live Text Content"
+                  value={firstTextElement.content}
+                  onChange={(e) =>
+                    updateElement(activeSceneId, firstTextElement.id, { content: e.target.value })
+                  }
+                />
+              )}
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-bold text-[var(--clay-muted)]">Brand Primary Color</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={project.brand.colors.primary || "#3b82f6"}
+                    onChange={(e) => updateBrand({ colors: { ...project.brand.colors, primary: e.target.value } })}
+                    className="w-10 h-10 rounded-lg cursor-pointer bg-transparent border-0"
+                  />
+                  <span className="text-xs font-mono">{project.brand.colors.primary}</span>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-col gap-4">
               <Input label="Element Name" defaultValue="Main Title" />
